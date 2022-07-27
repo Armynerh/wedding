@@ -1,0 +1,102 @@
+{% extends 'user/layout1.html'%}
+{% block title%} {{session['user']}} {% endblock %}
+{% block statement %}
+<p class="display-4 color1">Welcome  </p>
+    {% include 'user/nav.html'%}
+{% endblock statement %}
+{% block form %}
+<div>
+<img src="{{url_for('static', filename='images/profile.png')}}" class="img-fluid" id="profile">
+</div>
+<form enctype="multipart/form-data" method="post" id='myform'>
+    <div class="form-floating my-3">
+        <input type="file" name="image"  class="form-control form-control-lg" style="background-color:rgba(0, 0,0, 0.5);border: 1px solid #a8c868; color:#fff;">
+    </div>
+    <div class="form-floating my-3">
+        <input type="text" name="firstname"  placeholder="firstname" class="form-control form-control-lg" style="background-color:rgba(0, 0,0, 0.5);border: 1px solid #a8c868; color:#fff;">
+    </div>
+    <div class="form-floating my-3">
+        <input type="text" name="lastname"  placeholder="lastname" class="form-control form-control-lg" style="background-color:rgba(0, 0,0, 0.5);border: 1px solid #a8c868; color:#fff;">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+    </div>
+    <div class="d-flex btn-group">
+        <button type='button' id="btnserial" class="btn btn-lg color3 d-inline-block" style="border:2px solid #a8c868;">submit</button>
+    </div>
+</form>
+
+<form action="" method="get">
+    <div class="form-floating my-3">
+        <input type="email"  id="username" placeholder="Username" class="form-control form-control-lg" style="background-color:rgba(0, 0,0, 0.5);border: 1px solid #a8c868; color:#fff;">
+    </div>
+    <input type="hidden" name="csrf_token" id="csrf_token" value="{{csrf_token()}}">
+    <div class="form-floating my-3">
+        <input type="password" name="password" id="password" placeholder="Password" class="form-control form-control-lg" style="background-color:rgba(0, 0,0, 0.5);border: 1px solid #a8c868; color:#fff;">
+    </div>
+    <div class="form-floating my-3">
+        
+        <select  id="mystate" class="form-control">
+            <option value=>please select...</option> 
+            {%for i in states %}
+           <option value='{{i.state_id}}'>{{i.state_name}}</option> 
+           {%endfor%}
+        </select>
+        <select  id="mylga" class="form-control">
+
+            {%for j in lgas %}
+           <option value='{{i.lga_id}}'>{{i.lga_name}}</option> 
+           {%endfor%}
+        </select>
+        
+    </div>
+   
+    <div class="d-flex btn-group">
+        <button class="btn btn-lg color3 d-inline-block" style="border:2px solid #a8c868;">submit</button>
+    </div>
+</form>
+{% endblock%}
+{% block custom_scripts %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btnserial').click(function(){
+            var form = document.getElementById('myform')
+            var data2send = new FormData(form) //instatiating the object in js   yo
+            //var data2send=$('#myform').serialize() the downside: it can't get 
+            data2send.append('missing', "I'm not part of the form")
+            $.ajax({
+                url:'/ajaxtest/final',
+                data:data2send,
+                type:'post',
+                dataType:'json',
+                //when using FormData set the following
+                cache:false,
+                processData:false,
+                contentType:false,
+                success:function(rsp){
+                   imglocation='/static/images/'+rsp.filename
+                   $('#profile').attr('src', imglocation)
+                },
+                error:function(error){
+                    console.log(error)
+                }
+
+            })
+        })
+        $('#mystate').change(function(){
+            data2send={"stateid": $(this).val()}
+            $.ajax({
+            url:'/ajaxtest/state',
+            data: data2send,
+            dataType:'text',
+            type:'get',
+            beforeSend:function(){},
+            success:function(rsp){
+                $('#mylga').html(rsp)
+            },
+            error:function(errormsg){
+                console.log (errormsg)
+            }
+            })
+        })
+    })
+</script>
+{% endblock%}

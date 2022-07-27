@@ -1,0 +1,32 @@
+{%extends 'user/layout1.html'%}
+{%block form%}
+<form action="{{url_for('submit_registry')}}" method="post">
+<table class="table table-striped">
+    <tr>
+        <th>#</th>
+        <th> Gift Name</th>
+       
+    </tr>
+    {%for g in gifts%}
+    <tr>
+        {%if g.gift_id in promised_gifts%}
+        <th><input type="checkbox" name="gifts" value="{{g.gift_id}}" checked></th>
+        {%else%}
+        <th><input type="checkbox" name="gifts" value="{{g.gift_id}}"></th>
+        {%endif%}
+        <th>{{g.gift_name}}</th>
+    </tr>
+   
+
+    {%endfor%}
+</table>
+<div class="d-flex btn-group">
+    <button class="btn btn-lg color3 " style="border:2px solid #a8c868;">Submit</button>
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+</div>
+
+</form>
+{% endblock%}
+{% block statement %}
+{% include 'user/nav.html'%}
+{% endblock statement %}

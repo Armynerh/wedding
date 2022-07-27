@@ -1,0 +1,26 @@
+
+    
+    <p class="lead color2">
+        We would like to hear from you. Please fill the form let us know your thoughts..
+    </p>
+    {% set msg = get_flashed_messages(with_categories=True)%}
+    {% if msg %}
+    {% for i in msg %}
+    {% if i[0] == 'error'%}
+    <p class="alert alert-danger">{{i[1]}}</p>
+    {% else %}
+    <p class="alert alert-success">{{i[1]}}</p>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="bg-dark col-7 p-3">
+        <a href="/update" class="btn-link lead color1 d-block mb-3 px-3">Edit Profile</a>
+        <a href="/user/upload" class="btn-link lead color1 d-block mb-3 px-3">Upload pictures</a>
+        <a href="/registry" class="btn-link lead color1 d-block mb-3 px-3">Gift Registry</a>
+        <a href="/ajaxtest" class="btn-link lead color1 d-block mb-3 px-3">Ajax demo</a>
+        <a href="/forum" class="btn-link lead color1 d-block mb-3 px-3">post comments</a>  
+        <a href="/logout" class="btn-link lead  color1 d-block mb-3 px-3">Log out</a>
+
+    </div>
+    
+    

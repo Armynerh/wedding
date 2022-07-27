@@ -1,0 +1,14 @@
+{%extends 'admin/admin_panel.html'%}
+{% block contents%}
+<div class=" row">
+<div clsds="col"> 
+    <form action="{{ url_for('update_gift')}}", method="post" >
+        <input type="text" name="giftname"  value="{{deets.gift_name}}">
+        <input type="hidden" name="id"  value="{{deets.gift_id}}">
+        <button class="btn btn-outline-primary">Update Details</button>
+    </form>
+
+</div>
+
+</div>
+{% endblock contents%}

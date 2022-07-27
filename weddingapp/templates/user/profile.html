@@ -1,0 +1,16 @@
+{% extends 'user/layout1.html'%}
+{% block title%} {{session['user']}} {% endblock %}
+{% block statement %}
+<p class="display-4 color1">Welcome,{{guest_deets.guest_fname}}  </p>
+    {% include 'user/nav.html'%}
+{% endblock statement %}
+{% block form %}
+<div class="p-3 mt-5">
+    {{guests_deets}}
+    {%if guest_deets.guest_image != ''%}
+    <img src="{{url_for('static', filename='uploads/'+guest_deets.guest_image)}}" class="img-fluid">
+    {%else%}
+    <a href="/user/upload">click here to upload image</a>
+    {% endif %}
+        </div>
+{% endblock%}
